@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/Data/DespesaDAO.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Utilizadores/SMorador.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Pagamentos/SPagamento.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Despesas/ADespesa.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Facade.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/Data/MoradorDAO.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Despesas/EstadoDespesa.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Despesas/SDespesaLocal.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Despesas/SDespesaGeral.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/Data/DividasDAO.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/JDBC.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Utilizadores/SSenhorio.java</file>
-            <file>file:/C:/Users/ToSilva/Desktop/Stuff/University/DSS/Most%20Recent/DSS2/src/Sistema/Gestao/Despesas/LN/Subsistema/Utilizadores/AConta.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

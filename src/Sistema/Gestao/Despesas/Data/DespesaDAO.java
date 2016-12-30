@@ -1,6 +1,7 @@
 package Sistema.Gestao.Despesas.Data;
 
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.ADespesa;
+import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.SDespesaLocal;
 import Sistema.Gestao.Despesas.SQL.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class DespesaDAO implements Map<String,ADespesa> {
+public abstract class DespesaDAO implements Map<String,ADespesa[]> {
 
     @Override
     public int size() 
@@ -63,12 +64,26 @@ public class DespesaDAO implements Map<String,ADespesa> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public ADespesa put(String key, ADespesa value) {
-         Connection con = null;
-        try {
-            
-            con = Connector.connect();
+        try { 
+            Connection con = null;
+            con = Connector.connect();            
+            if (value instanceof SDespesaLocal) {          
+                    /**
+                    * Atualizar tabela MoradorDespesa.
+                    */
+
+                    PreparedStatement ps2 = con.prepareStatement("INSERT INTO MoradorDespesa (Nome,Despesa,votoRemover,votoValidar)\n" 
+                                                                +"VALUES (?,?,?,?)\n");
+                    ps2.setString(1, );
+                    ps2.setString(2, value.buscaData().toString());
+                    ps2.setBoolean(3, false);
+                    ps2.setBoolean(4, false);
+                    ps2.executeUpdate();
+            } 
+            /**
+            * Atualizar tabela Despesa.
+            */
             PreparedStatement ps = con.prepareStatement("INSERT INTO Despesa (Data,bOcasional,EstadoDespesa,bLocal)\n" 
                                                         +"VALUES (?,?,?,?)\n"
                                                         +"ON DUPLICATE KEY UPDATE EstadoDespesa=VALUES(EstadoDespesa)");
@@ -76,13 +91,13 @@ public class DespesaDAO implements Map<String,ADespesa> {
             ps.setBoolean(2, value.buscaOcasional());
             ps.setString(3, value.buscaEstado().toString());
             ps.setBoolean(4, value.buscaLocal());
-            ps.executeUpdate();
+            ps.executeUpdate();        
             
         } catch (Exception e) {
-            e.printStackTrace();
+           e.printStackTrace();
         } finally {
-            Connector.close(con);
-        }
+           Connect.close(con);
+        }       
         return value;
     }
 

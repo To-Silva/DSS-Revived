@@ -98,7 +98,38 @@ public class MoradorDAO implements Map<String,SMorador>
 
     @Override
     public Set<String> keySet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int i=0;
+        Set<String> res = null;
+        String nome = null;
+            Connection con = null;
+            try 
+            {
+                con = Connector.connect();
+                PreparedStatement ps = con.prepareStatement("select Nome from morador");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) 
+                {
+                    nome = rs.getString(i);
+                    res.add(nome);
+                    i++;
+                }
+            } 
+            catch (SQLException e) 
+            {
+                e.printStackTrace();
+            } 
+            finally 
+            {
+                try 
+                {
+                    con.close();
+                } 
+                catch (Exception e) 
+                {
+                    e.printStackTrace();
+                }
+            }
+        return res;
     }
 
     @Override

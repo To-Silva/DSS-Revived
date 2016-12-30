@@ -50,10 +50,8 @@ public abstract class ADespesa {
 		return this.estado==EstadoDespesa.DespesaSuspensa;
 	}
 
-	public String[] buscaMoradores() {
-            Set<String> s = pagamentos.keySet();
-            String moradores[]=s.toArray(new String[s.size()]);
-            return moradores;
+	public Set<String> buscaMoradores() {
+            return pagamentos.keySet();
 	}
 
 	public LocalDateTime buscaData(){
