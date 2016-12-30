@@ -239,9 +239,35 @@ public class MoradorDAO implements Map<String,SMorador>
 
     @Override
     public Collection<SMorador> values() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection con = null;
+        Collection<SMorador> moradores=null;
+        try { 
+            con = Connector.connect();    
+            /**
+            * Atualizar tabela Morador.
+            */
+            PreparedStatement ps = con.prepareStatement("SELECT Username,Password,Morador,Data,Removido FROM Conta innerjoin Morador on Conta.Morador=Morador.Nome"); 
+            ResultSet rs=ps.executeQuery();
+            while(rs.next()) 
+            {
+                if(rs.getBoolean(5)) 
+                {
+                    moradores.add(new SMorador(rs.getString(1),rs.getString(2),rs.getDate(4),rs.getString(3)));
+                }
+            }        
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                moradores=null;
+            }
+        }       
+        return moradores;
     }
-
+    
     @Override
     public Set<Entry<String, SMorador>> entrySet() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
