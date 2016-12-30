@@ -16,6 +16,8 @@ import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -80,7 +82,27 @@ public class MoradorDAO implements Map<String,SMorador>
 
     @Override
     public SMorador put(String key, SMorador value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection con = null;
+        try { 
+            con = Connector.connect();    
+            /**
+            * Atualizar tabela Despesa.
+            */
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Morador (Nome,Data)\n" 
+                                                        +"VALUES (?,?)\n");
+            ps.setString(1, value.buscaNome());
+            ps.setString(2, value.buscaDataDeResidencia().toString());
+            ps.executeUpdate();       
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DespesaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }       
+        return value;
     }
 
     @Override
