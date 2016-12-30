@@ -55,6 +55,13 @@ public class Facade {
             }
 	}
 
+	public void alteraDespesaLocal(ADespesa despesa, ADespesa despesaAlterada) {
+            Set<String> nomes=despesa.buscaMoradores();
+            for (String s : nomes) {
+                despesas.put(s,despesaAlterada);
+            }
+	}        
+        
 	/**
 	 * 
 	 * @param Despesa

@@ -86,7 +86,7 @@ public class MoradorDAO implements Map<String,SMorador>
         try { 
             con = Connector.connect();    
             /**
-            * Atualizar tabela Despesa.
+            * Atualizar tabela Morador.
             */
             PreparedStatement ps = con.prepareStatement("INSERT INTO Morador (Nome,Data)\n" 
                                                         +"VALUES (?,?)\n");

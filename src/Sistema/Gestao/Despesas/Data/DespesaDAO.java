@@ -79,12 +79,13 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
             /**
             * Atualizar tabela Despesa.
             */
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Despesa (Data,bOcasional,EstadoDespesa,bLocal)\n" 
-                                                        +"VALUES (?,?,?,?)\n");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Despesa (Data,bOcasional,EstadoDespesa,bLocal,Descricao)\n" 
+                                                        +"VALUES (?,?,?,?,?)\n");
             ps.setString(1, (value.buscaData()).toString());
             ps.setBoolean(2, value.buscaOcasional());
             ps.setString(3, value.buscaEstado().toString());
             ps.setBoolean(4, value.buscaLocal());
+            ps.setString(5, value.buscaDescricao().toString());
             ps.executeUpdate();       
             
             if (value instanceof SDespesaLocal) {          
@@ -133,6 +134,34 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
         return value;
     }
 
+        public ADespesa alteraDespesa(String nome, ADespesa value) {
+        Connection con = null;
+        try { 
+            con = Connector.connect();    
+            /**
+            * Atualizar tabela Despesa.
+            */
+            PreparedStatement ps = con.prepareStatement("Update Despesa (Data,bOcasional,EstadoDespesa,bLocal,Descricao)\n"
+                                                       +"SET bOcasional=?,EstadoDespesa=?,bLocal=?,Descricao=?\n"
+                                                       +"Where Data=?\n");
+            ps.setBoolean(1, value.buscaOcasional());
+            ps.setString(2, value.buscaEstado().toString());
+            ps.setBoolean(3, value.buscaLocal());
+            ps.setString(4, value.buscaDescricao());
+            ps.setString(5, (value.buscaData()).toString());
+            ps.executeUpdate();       
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DespesaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }       
+        return value;
+    }
+    
     @Override
     public ADespesa remove(Object key) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
