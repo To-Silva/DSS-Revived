@@ -70,7 +70,30 @@ public class MoradorDAO implements Map<String,SMorador>
 
     @Override
     public boolean containsKey(Object key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection con = null;
+        boolean result =false;
+        String Username=(String)key;
+        try { 
+            con = Connector.connect();    
+            /**
+            * Atualizar tabela Morador.
+            */
+            PreparedStatement ps = con.prepareStatement("SELECT Username FROM Conta where Username=?"); 
+            ResultSet rs=ps.executeQuery();
+            if(rs.next()) 
+            {
+                result=true;
+            }        
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }       
+        return result;
     }
 
     @Override
@@ -80,7 +103,30 @@ public class MoradorDAO implements Map<String,SMorador>
 
     @Override
     public SMorador get(Object key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection con = null;
+        String Username =(String) key;
+        SMorador morador=null;
+        try { 
+            con = Connector.connect();    
+            /**
+            * Atualizar tabela Morador.
+            */
+            PreparedStatement ps = con.prepareStatement("SELECT Username,Password,Morador FROM Conta where Username=?"); 
+            ResultSet rs=ps.executeQuery();
+            if(rs.next()) 
+            {
+            }        
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                morador=null;
+            }
+        }       
+        return morador;
     }
 
     @Override
@@ -216,8 +262,8 @@ public class MoradorDAO implements Map<String,SMorador>
                 endereco=rs.getString(2); 
                 nome=rs.getString(1);
                 PreparedStatement ps2 = con.prepareStatement("select Username,Password from conta where Senhorio=?");
-                ps.setString(0, nome);
-                ResultSet rs2 = ps.executeQuery();
+                ps2.setString(1, nome);
+                ResultSet rs2 = ps2.executeQuery();
                 if(rs2.next()) 
                 {
                     res= new SSenhorio(rs2.getString(1),rs2.getString(2),endereco,nome);

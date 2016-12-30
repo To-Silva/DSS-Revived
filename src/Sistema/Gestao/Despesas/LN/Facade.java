@@ -159,9 +159,8 @@ public class Facade {
 	 * @param Utilizador
 	 */
 	public boolean existeUtilizador(String Utilizador) {
-		// TODO - implement Facade.existeUtilizador
-		throw new UnsupportedOperationException();
-	}
+            return moradores.containsKey(Utilizador);
+        }
 
 	public List<SPagamento> listaPagamentosDespesasGerais() {
 		// TODO - implement Facade.listaPagamentosDespesasGerais
