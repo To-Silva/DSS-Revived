@@ -10,6 +10,7 @@ import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import Sistema.Gestao.Despesas.Data.MoradorDAO;
 import SubsistemaDeUtilizadores.*;
 import Subsistema_de_Despesas.*;
+import java.util.Set;
 
 public class Facade {
 
@@ -32,7 +33,10 @@ public class Facade {
 	 * @param Despesa
 	 */
 	public void adicionaDespesa(ADespesa despesa) {
-            despesas.put(despesa.buscaDescricao(),despesa);
+            Set<String> nomes=despesa.buscaMoradores();
+            for (String s : nomes) {
+                despesas.put(s,despesa);
+            }
 	}
 
 	/**
@@ -41,7 +45,10 @@ public class Facade {
 	 * @param DespesaAlterada
 	 */
 	public void alteraDespesaGeral(ADespesa despesa, ADespesa despesaAlterada) {
-            despesas.put(despesa.buscaDescricao(),despesaAlterada);
+            Set<String> nomes=moradores.keySet();
+            for (String s : nomes) {
+                despesas.put(s,despesaAlterada);
+            }
 	}
 
 	/**
@@ -49,8 +56,11 @@ public class Facade {
 	 * @param Despesa
 	 */
 	public void arquivaDespesa(ADespesa despesa) {
+            Set<String> nomes=moradores.keySet();
             despesa.arquiva();
-            despesas.put(despesa.buscaDescricao(), despesa);
+            for (String s : nomes) {
+                despesas.put(s, despesa);
+            }
 	}
 
 	/**
