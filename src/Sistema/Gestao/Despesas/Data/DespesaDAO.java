@@ -64,23 +64,10 @@ public abstract class DespesaDAO implements Map<String,ADespesa[]> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public ADespesa put(String key, ADespesa value) {
+    public ADespesa put(String nome, ADespesa value) {
         try { 
             Connection con = null;
-            con = Connector.connect();            
-            if (value instanceof SDespesaLocal) {          
-                    /**
-                    * Atualizar tabela MoradorDespesa.
-                    */
-
-                    PreparedStatement ps2 = con.prepareStatement("INSERT INTO MoradorDespesa (Nome,Despesa,votoRemover,votoValidar)\n" 
-                                                                +"VALUES (?,?,?,?)\n");
-                    ps2.setString(1, );
-                    ps2.setString(2, value.buscaData().toString());
-                    ps2.setBoolean(3, false);
-                    ps2.setBoolean(4, false);
-                    ps2.executeUpdate();
-            } 
+            con = Connector.connect();    
             /**
             * Atualizar tabela Despesa.
             */
@@ -91,7 +78,41 @@ public abstract class DespesaDAO implements Map<String,ADespesa[]> {
             ps.setBoolean(2, value.buscaOcasional());
             ps.setString(3, value.buscaEstado().toString());
             ps.setBoolean(4, value.buscaLocal());
-            ps.executeUpdate();        
+            ps.executeUpdate();       
+            
+            if (value instanceof SDespesaLocal) {          
+                    /**
+                    * Atualizar tabela MoradorDespesa.
+                    */
+
+                    PreparedStatement ps2 = con.prepareStatement("INSERT INTO MoradorDespesa (Nome,Despesa,votoRemover,votoValidar)\n" 
+                                                                +"VALUES (?,?,?,?)\n");
+                    ps2.setString(1, nome);
+                    ps2.setString(2, value.buscaData().toString());
+                    ps2.setBoolean(3, false);
+                    ps2.setBoolean(4, false);
+                    ps2.executeUpdate();
+            } 
+            /**
+            * Atualizar tabela MoradorDespesaPagamento.
+            */            
+            PreparedStatement ps3 = con.prepareStatement("INSERT INTO Pagamento (Data,Valor,DataPagamento,Nome)\n" 
+                                                        +"VALUES (?,?,?,?)\n");
+            ps3.setString(1, value.buscaPagamento(nome).toString());
+            ps3.setFloat(2, value.buscaPagamento(nome).buscaValor());
+            ps3.setString(3, value.buscaPagamento(nome).buscaDataPagamento().toString());
+            ps3.setString(4, value.buscaPagamento(nome).buscaNome());
+            ps3.executeUpdate();    
+            
+            /**
+            * Atualizar tabela MoradorDespesaPagamento.
+            */            
+            PreparedStatement ps4 = con.prepareStatement("INSERT INTO MoradorDespesaPagamento (Nome,Despesa,Pagamento)\n" 
+                                                        +"VALUES (?,?,?)\n");
+            ps4.setString(1, nome);
+            ps4.setString(2, value.buscaData().toString());
+            ps4.setString(3, value.buscaPagamento(nome).buscaData().toString());
+            ps4.executeUpdate();                 
             
         } catch (Exception e) {
            e.printStackTrace();
