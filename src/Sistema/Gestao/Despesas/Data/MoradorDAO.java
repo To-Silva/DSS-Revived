@@ -42,7 +42,7 @@ public class MoradorDAO implements Map<String,SMorador>
                 size = rs.getInt(1);
             }
         } 
-        catch (SQLException | ClassNotFoundException e) 
+        catch (SQLException e) 
         {
             e.printStackTrace();
         } 
@@ -156,9 +156,8 @@ public class MoradorDAO implements Map<String,SMorador>
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()) 
                 {
-                    nome = rs.getString(i);
+                    nome = rs.getString(1);
                     res.add(nome);
-                    i++;
                 }
             } 
             catch (SQLException e) 
@@ -198,7 +197,39 @@ public class MoradorDAO implements Map<String,SMorador>
     }
 
     public AConta Login(String Utilizador, String Password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int i=0;
+        AConta res = null;
+        Connection con = null;
+        String Morador=null;
+        String Senhorio=null;
+        try 
+        {
+            con = Connector.connect();
+            PreparedStatement ps = con.prepareStatement("select Morador,Senhorio from conta where Username=? and Password=?");
+            ps.setString(0, Utilizador);
+            ps.setString(1, Password);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) 
+                {
+                    Morador = rs.getString(1);
+                    Senhorio = rs.getString(2);
+                }
+            } 
+            catch (SQLException e) 
+            {
+                e.printStackTrace();
+            } 
+            finally 
+            {
+                try 
+                {
+                    con.close();
+                } 
+                catch (Exception e) 
+                {
+                    e.printStackTrace();
+                }
+            }
+        return res;
     }
-    
 }

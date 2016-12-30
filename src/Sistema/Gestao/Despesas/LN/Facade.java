@@ -47,16 +47,16 @@ public class Facade {
 	 */
 	public void alteraDespesaGeral(ADespesa despesa, ADespesa despesaAlterada) {
             Set<String> nomes=moradores.keySet();
-            for (String s : nomes) {
+            /*for (String s : nomes) {
                 despesas.put(s,despesaAlterada);
-            }
+            }*/
 	}
 
 	public void alteraDespesaLocal(ADespesa despesa, ADespesa despesaAlterada) {
             Set<String> nomes=despesa.buscaMoradores();
-            for (String s : nomes) {
+            /*for (String s : nomes) {
                 despesas.put(s,despesaAlterada);
-            }
+            }*/
 	}        
         
 	/**
@@ -66,9 +66,9 @@ public class Facade {
 	public void arquivaDespesa(ADespesa despesa) {
             Set<String> nomes=moradores.keySet();
             despesa.arquiva();
-            for (String s : nomes) {
+            /*for (String s : nomes) {
                 despesas.put(s, despesa);
-            }
+            }*/
 	}
 
 	/**
@@ -110,32 +110,32 @@ public class Facade {
             throw new UnsupportedOperationException();
 	}
 
-	public ADespesa[] buscaListaDespesas() {
+	public List<ADespesa> buscaListaDespesas() {
 		// TODO - implement Facade.buscaListaDespesas
 		throw new UnsupportedOperationException();
 	}
 
-	public ADespesa[] buscaListaDespesasAtivas() {
+	public List<ADespesa> buscaListaDespesasAtivas() {
 		// TODO - implement Facade.buscaListaDespesasAtivas
 		throw new UnsupportedOperationException();
 	}
 
-	public ADespesa[] buscaListaDespesasGerais() {
+	public List<ADespesa> buscaListaDespesasGerais() {
 		// TODO - implement Facade.buscaListaDespesasGerais
 		throw new UnsupportedOperationException();
 	}
 
-	public ADespesa[] buscaListaDespesasGeraisAtivas() {
+	public List<ADespesa> buscaListaDespesasGeraisAtivas() {
 		// TODO - implement Facade.buscaListaDespesasGeraisAtivas
 		throw new UnsupportedOperationException();
 	}
 
-    public ADespesa[] buscaListaDespesasSuspensas() 
+    public List<ADespesa> buscaListaDespesasSuspensas() 
     {
         throw new UnsupportedOperationException();
     }
 
-	public SPagamento[] buscaListaDividas() {
+	public List<SPagamento> buscaListaDividas() {
 		// TODO - implement Facade.buscaListaDividas
 		throw new UnsupportedOperationException();
 	}
@@ -144,7 +144,7 @@ public class Facade {
         return (List<SMorador>) moradores.values();
     }
 
-	public SPagamento[] buscaListaPagamentos() {
+	public List<SPagamento> buscaListaPagamentos() {
 		// TODO - implement Facade.buscaListaPagamentos
 		throw new UnsupportedOperationException();
 	}
@@ -163,7 +163,7 @@ public class Facade {
 		throw new UnsupportedOperationException();
 	}
 
-	public SPagamento[] listaPagamentosDespesasGerais() {
+	public List<SPagamento> listaPagamentosDespesasGerais() {
 		// TODO - implement Facade.listaPagamentosDespesasGerais
 		throw new UnsupportedOperationException();
 	}

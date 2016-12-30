@@ -60,13 +60,15 @@ public class MainUI {
                 int indexes[]=Menu.readCSVInts(bf);
                 if (indexes!=null) 
                 {
-                    Map<String,SPagamento> pagamentos = new HashMap<>(indexes.length);
+                    Map<String,List<SPagamento>> pagamentos = new HashMap<>(indexes.length);
                     for(int index : indexes) 
                     {
                         SPagamento pagamento 
                                 = new SPagamento(LocalDateTime.now().plusDays(30),
                                                  Valor/indexes.length);
-                        pagamentos.put(Lista.get(index-1).buscaNome(),pagamento);
+                        List<SPagamento> pagamentosl=new ArrayList<>(1);
+                        pagamentosl.add(pagamento);
+                        pagamentos.put(Lista.get(index-1).buscaNome(),pagamentosl);
                     }
                     ADespesa despesa=new SDespesaGeral(LocalDateTime.now(),
                                                        false,

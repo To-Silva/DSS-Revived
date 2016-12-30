@@ -66,7 +66,7 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
     }
 
     @Override
-    public ADespesa get(Object key) 
+    public Collection<ADespesa> get(Object key) 
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -186,14 +186,10 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
     }
     
     @Override
-    public ADespesa remove(Object key) {
+    public Collection<ADespesa> remove(Object key) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void putAll(Map<? extends String, ? extends ADespesa> m) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void clear() {
@@ -206,12 +202,17 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
     }
 
     @Override
-    public Collection<ADespesa> values() {
+    public Collection<Collection<ADespesa>> values() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Entry<String, ADespesa>> entrySet() {
+    public Set<Entry<String, Collection<ADespesa>>> entrySet() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }    
+
+    @Override
+    public void putAll(Map<? extends String, ? extends Collection<ADespesa>> m) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
