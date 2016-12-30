@@ -9,6 +9,7 @@ import Sistema.Gestao.Despesas.LN.Facade;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.ADespesa;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.EstadoDespesa;
+import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.SDespesaGeral;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.SDespesaLocal;
 import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.AConta;
@@ -32,6 +33,49 @@ public class MainUI {
     public void MainUI()
     {
         Facade = new Facade();
+    }
+
+    private void AdicionarDespesaSenhorio(BufferedReader bf) throws IOException
+    {
+        System.out.println("--@quit a qualquer altura para sair--");
+        System.out.println("Dê uma decrição da Despesa");
+        String Nome=Menu.readString(bf);
+        if (Nome.equals("@quit"))
+        {
+            System.out.println("Atribua um valor à Despesa");
+            float Valor=Menu.readPosFloat(bf);
+            if (Valor!=-1) 
+            {
+                StringBuilder sb=new StringBuilder();
+                sb.append("Escolha os moradores envolvidos na despesa separados por vírgulas");
+                List<SMorador> Lista=Facade.buscaListaMoradores();
+                int i=1;
+                for(SMorador Morador : Lista) 
+                {
+                    sb.append(i).append(" - ").append(Morador.buscaNome());
+                    i++;
+                }
+                System.out.println(sb.toString());
+                int indexes[]=Menu.readCSVInts(bf);
+                if (indexes!=null) 
+                {
+                    Map<String,SPagamento> pagamentos = new HashMap<>(indexes.length);
+                    for(int index : indexes) 
+                    {
+                        SPagamento pagamento 
+                                = new SPagamento(LocalDateTime.now().plusDays(30),
+                                                 Valor/indexes.length);
+                        pagamentos.put(Lista.get(index-1).buscaNome(),pagamento);
+                    }
+                    ADespesa despesa=new SDespesaGeral(LocalDateTime.now(),
+                                                       false,
+                                                       Nome,
+                                                       EstadoDespesa.DespesaSuspensa,
+                                                       pagamentos);
+                    Facade.adicionaDespesa(despesa);
+                }
+            }
+        }
     }
     
     private void AdicionarDespesaMorador(BufferedReader bf) throws IOException
@@ -88,6 +132,7 @@ public class MainUI {
         {
             sb.append(i).append(" - ").append(despesa.buscaDescricao());
         }
+        System.out.println(sb.toString());
         int index=Menu.readPosInt(bf);
         if (index!=-1) 
         {
@@ -103,20 +148,109 @@ public class MainUI {
             }                
         }
     }
-    
+
     private void RemoverDespesaMorador(BufferedReader bf) throws IOException
     {
+        System.out.println("--@quit a qualquer altura para sair--");
+        StringBuilder sb=new StringBuilder();
+        sb.append("Escolha a despesa em que está envolvido que pretende remover");
+        List<ADespesa> Lista=Facade.buscaListaDespesasSuspensas();
+        int i=1;
+        for(ADespesa despesa : Lista) 
+        {
+            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+        }
+        System.out.println(sb.toString());
+        int index=Menu.readPosInt(bf);
+        if (index!=-1) 
+        {
+            SDespesaLocal despesa=(SDespesaLocal) Lista.get(index);
+            if(despesa.buscaVotosRemover().get(((SMorador)moradorAtual).buscaNome())) 
+            {
+                System.out.println("Já votou esta Despesa para remover");
+            }
+            else 
+            {
+                despesa.votoRemocao((SMorador)moradorAtual);
+                Facade.alteraDespesa(despesa);
+            }                
+        }    
+    }
     
+    private void RemoverDespesaSenhorio(BufferedReader bf) throws IOException
+    {
+        System.out.println("--@quit a qualquer altura para sair--");
+        StringBuilder sb=new StringBuilder();
+        sb.append("Escolha a despesa em que está envolvido que pretende remover");
+        List<ADespesa> Lista=Facade.buscaListaDespesasGeraisAtivas();
+        int i=1;
+        for(ADespesa despesa : Lista) 
+        {
+            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+        }
+        System.out.println(sb.toString());
+        int index=Menu.readPosInt(bf);
+        if (index!=-1) 
+        {
+            SDespesaLocal despesa=(SDespesaLocal) Lista.get(index);
+            if(despesa.haPagamento()) 
+            {
+                System.out.println("Já não é possível remover esta Despesa");
+            }
+            else 
+            {
+                Facade.removeDespesa(despesa);
+            }                
+        }    
     }
     
     private void PagarDespesaMorador(BufferedReader bf) throws IOException
     {
-    
+        System.out.println("--@quit a qualquer altura para sair--");
+        StringBuilder sb=new StringBuilder();
+        sb.append("Escolha a despesa em que está envolvido que pretende pagar");
+        List<ADespesa> Lista=Facade.buscaListaDespesasAtivas();
+        int i=1;
+        for(ADespesa despesa : Lista) 
+        {
+            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+        }
+        System.out.println(sb.toString());
+        int index=Menu.readPosInt(bf);
+        if (index!=-1) 
+        {
+            SDespesaLocal despesa=(SDespesaLocal) Lista.get(index);
+            if(despesa.buscaVotosRemover().get(((SMorador)moradorAtual).buscaNome())) 
+            {
+                System.out.println("Já votou esta Despesa para remover");
+            }
+            else 
+            {
+                despesa.votoRemocao((SMorador)moradorAtual);
+                Facade.alteraDespesa(despesa);
+            }                
+        }
     }
     
     private void PagarDívidaMorador(BufferedReader bf) throws IOException
     {
-    
+        System.out.println("--@quit a qualquer altura para sair--");
+        StringBuilder sb=new StringBuilder();
+        sb.append("Escolha a dívida que pretende pagar");
+        List<SPagamento> Lista=Facade.buscaListaDividas();
+        int i=1;
+        for(SPagamento divida : Lista) 
+        {
+            sb.append(i).append(" - ").append(divida.toString());
+        }
+        System.out.println(sb.toString());
+        int index=Menu.readPosInt(bf);
+        if (index!=-1) 
+        {
+            SPagamento divida=Lista.get(index);
+            Facade.arquivaDivida(divida);                
+        }
+
     }
     
     private void AlterarMorador(BufferedReader bf) throws IOException
