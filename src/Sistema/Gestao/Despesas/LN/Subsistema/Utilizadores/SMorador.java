@@ -27,4 +27,6 @@ public class SMorador extends AConta
     public Date buscaDataDeResidencia (){
         return this.dataDeResidencia;
     }
+
+
 }

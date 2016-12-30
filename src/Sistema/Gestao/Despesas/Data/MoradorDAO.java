@@ -15,6 +15,7 @@ import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -94,7 +95,14 @@ public class MoradorDAO implements Map<String,SMorador>
                                                         +"VALUES (?,?)\n");
             ps.setString(1, value.buscaNome());
             ps.setString(2, value.buscaDataDeResidencia().toString());
-            ps.executeUpdate();       
+            ps.executeUpdate();
+            PreparedStatement ps2 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)\n" 
+                                                         + "VALUES (?,?,?,?)");
+            ps.setString(1, value.buscaUsername());
+            ps.setString(2,value.buscaPassword());
+            ps.setString(3, value.buscaNome());
+            ps.setNull(4, Types.VARCHAR);
+            ps.executeUpdate();        
         } catch (Exception e) {
            e.printStackTrace();
         } finally {
@@ -107,6 +115,8 @@ public class MoradorDAO implements Map<String,SMorador>
         }       
         return value;
     }
+    
+    
 
     @Override
     public SMorador remove(Object o) {
@@ -190,12 +200,80 @@ public class MoradorDAO implements Map<String,SMorador>
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public SSenhorio buscaSenhorio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SSenhorio buscaSenhorio() 
+    {
+        Connection con=null;
+        SSenhorio res=null;
+        String nome=null;
+        String endereco=null;
+        try 
+        {
+            con = Connector.connect();
+            PreparedStatement ps = con.prepareStatement("select Nome,Endereco from Senhorio");
+            ResultSet rs= ps.executeQuery();
+            if(rs.next()) 
+            {
+                endereco=rs.getString(2); 
+                nome=rs.getString(1);
+                PreparedStatement ps2 = con.prepareStatement("select Username,Password from conta where Senhorio=?");
+                ps.setString(0, nome);
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next()) 
+                {
+                    res= new SSenhorio(rs2.getString(1),rs2.getString(2),endereco,nome);
+                }
+            }
+        }
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        } 
+        finally 
+        {
+            try 
+            {
+                con.close();
+            } 
+            catch (Exception e) 
+            {
+                e.printStackTrace();
+            }
+        }
+        return res;
     }
 
     public void atualizaSenhorio(SSenhorio Senhorio) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection con = null;
+        try { 
+            con = Connector.connect();    
+            /**
+            * Atualizar tabela Morador.
+            */
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Senhorio (Nome,Endereco)" 
+                                                        +"VALUES (?,?) ON DUPLICATE KEY UPDATE Nome=?,Endereco=?");
+            ps.setString(1, Senhorio.nome);
+            ps.setString(2, Senhorio.endereco);
+            ps.setString(3, Senhorio.endereco);
+            ps.executeUpdate();
+            PreparedStatement ps2 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)" 
+                                                         + "VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE Username=?,Password=?,Senhorio=?");
+            ps.setString(1, Senhorio.buscaUsername());
+            ps.setString(2,Senhorio.buscaPassword());
+            ps.setNull(3, Types.VARCHAR);
+            ps.setString(4, Senhorio.nome);
+            ps.setString(5, Senhorio.buscaUsername());
+            ps.setString(6,Senhorio.buscaPassword());
+            ps.setString(7, Senhorio.nome);
+            ps.executeUpdate();        
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }       
     }
 
     public AConta Login(String Utilizador, String Password) {

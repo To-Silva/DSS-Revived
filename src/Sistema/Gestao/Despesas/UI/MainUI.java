@@ -17,8 +17,10 @@ import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -492,15 +494,32 @@ public class MainUI {
         sb.append("1 - Adicionar Despesa\n");
         sb.append("2 - Remover Despesa\n");
         sb.append("3 - Alterar Informações de Senhorio\n");
-        sb.append("4 - Consultar Pagamentos");
-        sb.append("5 - Consultar Despesas");
+        sb.append("4 - Consultar Pagamentos\n");
+        sb.append("5 - Consultar Despesas\n");
+        sb.append("6 - Registar Moradores");
         Menu m= new Menu(sb,bf);
         m.addChoice((InputProcedure)this::AdicionarDespesaSenhorio);
         m.addChoice((InputProcedure)this::RemoverDespesaSenhorio);
         m.addChoice((InputProcedure)this::AlterarUtilizador);
         m.addChoice((InputProcedure)this::ConsultarPagamentosSenhorio);
         m.addChoice((InputProcedure)this::ConsultarDespesasSenhorio);
+        m.addChoice((InputProcedure)this::RegistarMoradores);
         m.run();
+    }
+    
+    private void RegistarMoradores(BufferedReader bf) throws IOException
+    {
+        String Utilizador;
+        String Password;
+        String Nome;
+        boolean RegistoValido;
+        System.out.println("Digite o username que pretende dar ao morador");
+        Utilizador=Menu.readString(bf);
+        System.out.println("Digite a password que pretende dar ao morador");
+        Password=Menu.readString(bf);
+        System.out.println("Digite o nome do morador");
+        Nome=Menu.readString(bf);
+        Facade.adicionaMorador(new SMorador(Utilizador,Password,new Date(LocalDate.now().toEpochDay()),Nome));
     }
     
     private void ConsultarPagamentosSenhorio(BufferedReader bf) 

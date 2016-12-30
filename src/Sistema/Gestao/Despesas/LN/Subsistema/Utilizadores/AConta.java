@@ -6,8 +6,8 @@ public abstract class AConta {
         
     public AConta(String Username,String Password)
     {
-            username=Username;
-            password=Password;
+        username=Username;
+        password=Password;
     }
     
     public void alteraUser(String Username)
@@ -18,5 +18,14 @@ public abstract class AConta {
     public void alteraPassword(String Password)
     {
         password=Password;
+    }
+    
+    public String buscaUsername() 
+    {
+        return username;
+    }
+
+    public String buscaPassword() {
+        return password;
     }
 }
