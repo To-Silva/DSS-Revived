@@ -12,17 +12,19 @@ import java.util.List;
 import java.util.Set;
 
 public class Facade {
-	private MoradorDAO moradores;
-	private DespesaDAO despesas;
-	private DividasDAO dividasDAO;
+	private final MoradorDAO moradores;
+	private final DespesaDAO despesas;
+	private final DividasDAO dividasDAO;
 	private AConta moradorAtual;
 
         public Facade() 
         {
+            System.out.println(this + "HAI");
             moradores= new MoradorDAO();
             despesas= new DespesaDAO();
             dividasDAO = new DividasDAO();
             moradorAtual=null;
+            System.out.println(this + "Again");
         }
 	/**
 	 * 

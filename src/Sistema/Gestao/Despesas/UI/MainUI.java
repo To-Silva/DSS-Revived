@@ -31,12 +31,12 @@ import java.util.List;
  * @author Andre
  */
 public class MainUI {
-    Facade Facade;
-    AConta moradorAtual;
+    private Facade Facade;
+    private AConta moradorAtual;
     
-    public void MainUI()
+    public MainUI()
     {
-        Facade = new Facade();
+        this.Facade = new Facade();
     }
 
     private void AdicionarDespesaSenhorio(BufferedReader bf) throws IOException
@@ -452,7 +452,8 @@ public class MainUI {
     {
         BufferedReader bf= new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb= new StringBuilder();
-        SSenhorio Senhorio=Facade.buscaSenhorio();
+        SSenhorio Senhorio;
+        Senhorio = this.Facade.buscaSenhorio();
         sb.append("0 - Sair\n");
         sb.append("1 - Login\n");
         if(Senhorio==null)
