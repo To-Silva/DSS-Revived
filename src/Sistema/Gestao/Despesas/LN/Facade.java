@@ -19,12 +19,10 @@ public class Facade {
 
         public Facade() 
         {
-            System.out.println(this + "HAI");
             moradores= new MoradorDAO();
             despesas= new DespesaDAO();
             dividasDAO = new DividasDAO();
             moradorAtual=null;
-            System.out.println(this + "Again");
         }
 	/**
 	 * 
