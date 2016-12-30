@@ -138,10 +138,11 @@ public class MoradorDAO implements Map<String,SMorador>
             /**
             * Atualizar tabela Morador.
             */
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Morador (Nome,Data)\n" 
-                                                        +"VALUES (?,?)\n");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Morador (Nome,Data,Removido)\n" 
+                                                        +"VALUES (?,?,?)\n");
             ps.setString(1, value.buscaNome());
-            ps.setString(2, value.buscaDataDeResidencia().toString());
+            ps.setDate(2, value.buscaDataDeResidencia());
+            ps.setBoolean(3,false);
             ps.executeUpdate();
             PreparedStatement ps2 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)\n" 
                                                          + "VALUES (?,?,?,?)");
