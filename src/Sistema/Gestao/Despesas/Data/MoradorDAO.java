@@ -341,8 +341,8 @@ public class MoradorDAO implements Map<String,SMorador>
                 if(rs2.next()) 
                 {
                     PreparedStatement ps5 = con.prepareStatement("DELETE FROM Conta where Username=?"); 
-                    ps3.setString(1, rs2.getString(1));
-                    ps3.executeUpdate();
+                    ps5.setString(1, rs2.getString(1));
+                    ps5.executeUpdate();
                 }                
             }
             PreparedStatement ps4 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)" 

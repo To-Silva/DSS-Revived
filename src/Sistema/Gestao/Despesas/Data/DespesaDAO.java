@@ -121,7 +121,7 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
                         con.prepareStatement("INSERT INTO Pagamento "+
                                              "(Data,Valor,DataPagamento,Nome)\n" 
                                              +"VALUES (?,?,?,?)\n");
-                ps3.setString(1, pagamento.toString());
+                ps3.setTimestamp(1, pagamento.buscaData());
                 ps3.setFloat(2, pagamento.buscaValor());
                 ps3.setNull(3, Types.TIMESTAMP);
                 ps3.setNull(4, Types.VARCHAR);
