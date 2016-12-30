@@ -32,6 +32,47 @@ public class Menu
         return temp;
     }
     
+    public static int[] readCSVInts(BufferedReader bf) throws IOException
+    {
+        
+        String temp="";
+        temp=bf.readLine();
+        boolean quit=false;
+        String Temps[];
+        int res[]=null;
+        while(!quit) 
+        {
+            while (temp==null) 
+            {
+                System.out.println("Digite algo");
+                temp=bf.readLine();
+            }
+            if(!temp.equals("@quit"))
+            {
+                Temps=temp.trim().split(",");
+                res= new int[Temps.length];
+                try 
+                {
+                    for(int i=0;i<Temps.length;i++)
+                    {
+                        res[i]=Integer.parseInt(Temps[i]);
+                    }
+                    quit=true;
+                }
+                catch (NumberFormatException e) 
+                {
+                    System.out.println("Digite números separados por vírgulas");
+                }
+            }
+            else
+            {
+                quit=true;
+            }
+        }
+        return res;
+    }
+    
+    
     /**
      * Método que lê um inteiro positivo.
      */
@@ -55,7 +96,26 @@ public class Menu
         return x;
     }
     
-
+    public static Float readPosFloat(BufferedReader bf)
+            throws IOException
+    {
+        int quit=1;
+        float x=0;
+        while (quit>0) {
+            try {
+                x=Float.parseFloat(bf.readLine());
+                if(x>=0)
+                    quit--;
+                else {
+                    System.out.println("Número Inválido");
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Número Inválido");
+            }
+        }
+        return x;
+    }
 
     
     /**

@@ -4,17 +4,17 @@ package Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos;
 import java.time.LocalDateTime;
 
 public class SPagamento {
-	private LocalDateTime dataDePagamento;
+	private LocalDateTime Data;
 	private float valor;
 	private String[] nomes;
-	private boolean pago=false;
+	private LocalDateTime DataPagamento;
 
 	public boolean atualizaPagamento() {
-            this.pago=true;
+            this.DataPagamento=LocalDateTime.now();
             return true;
 	}
         
         public boolean buscaPago(){
-            return pago;
+            return DataPagamento!=null;
         }
 }

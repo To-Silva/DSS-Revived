@@ -6,10 +6,18 @@
 package Sistema.Gestao.Despesas.UI;
 
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
-import Sistema.Gestao.Despesas.LN.*;
+import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.ADespesa;
+import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.EstadoDespesa;
+import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.SDespesaLocal;
+import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
+import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 /**
  *
@@ -25,7 +33,43 @@ public class MainUI {
     
     private void AdicionarDespesaMorador(BufferedReader bf) throws IOException
     {
-    
+        System.out.println("--@quit a qualquer altura para sair--");
+        System.out.println("Dê uma decrição da Despesa");
+        String Nome=Menu.readString(bf);
+        if (Nome.equals("@quit"))
+        {
+            System.out.println("Atribua um valor à Despesa");
+            float Valor=Menu.readPosFloat(bf);
+            if (Valor!=-1) 
+            {
+                StringBuilder sb=new StringBuilder();
+                sb.append("Escolha os moradores envolvidos na despesa separados por vírgulas");
+                List<SMorador> Lista=Facade.buscaListaMoradores();
+                int i=1;
+                for(Morador : Lista) 
+                {
+                    sb.append(i).append(" - ").append(Morador.buscaNome());
+                }
+                int indexes[]=Menu.readCSVInts(bf);
+                if (indexes!=null) 
+                {
+                    Map<String,SPagamento> pagamentos = new HashMap<>(indexes.length);
+                    for(int index : indexes) 
+                    {
+                        SPagamento pagamento 
+                                = new SPagamento(LocalDateTime.now().plusDays(30),
+                                                 Valor/indexes.length);
+                        pagamentos.put(Lista.get(index).buscaNome(),pagamento);
+                    }
+                    ADespesa despesa=new SDespesaLocal(LocalDateTime.now(),
+                                                       false,
+                                                       Nome,
+                                                       EstadoDespesa.DespesaSuspensa,
+                                                       pagamentos);
+                    Facade.adicionaDespesa(despesa);
+                }
+            }
+        }
     }
     
     private void ValidarDespesaMorador(BufferedReader bf) throws IOException
