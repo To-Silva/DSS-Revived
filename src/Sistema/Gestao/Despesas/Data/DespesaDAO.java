@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-public abstract class DespesaDAO implements Map<String,ADespesa[]> {
+public class DespesaDAO implements Map<String,ADespesa[]> {
 
     @Override
     public int size() 

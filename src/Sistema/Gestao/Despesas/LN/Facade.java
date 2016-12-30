@@ -8,18 +8,22 @@ import Sistema.Gestao.Despesas.Data.DividasDAO;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.ADespesa;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import Sistema.Gestao.Despesas.Data.MoradorDAO;
-import SubsistemaDeUtilizadores.*;
-import Subsistema_de_Despesas.*;
+import java.util.List;
 import java.util.Set;
 
 public class Facade {
-
 	private MoradorDAO moradores;
-	private SSenhorio senhorio;
 	private DespesaDAO despesas;
 	private DividasDAO dividasDAO;
 	private AConta moradorAtual;
 
+        public Facade() 
+        {
+            moradores= new MoradorDAO();
+            despesas= new DespesaDAO();
+            dividasDAO = new DividasDAO();
+            moradorAtual=null;
+        }
 	/**
 	 * 
 	 * @param Morador
@@ -79,14 +83,14 @@ public class Facade {
             
 	}
 
-	/**
-	 * 
-	 * @param Senhorio
-	 */
-	public void atualizaSenhorio(SSenhorio Senhorio) {
-		// TODO - implement Facade.atualizaSenhorio
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * 
+     * @param Senhorio
+    */
+    public void atualizaSenhorio(SSenhorio Senhorio) 
+    {
+        moradores.atualizaSenhorio(Senhorio);
+    }
 
 	public ADespesa buscaDespesa() {
 		// TODO - implement Facade.buscaDespesa
@@ -122,30 +126,29 @@ public class Facade {
 		throw new UnsupportedOperationException();
 	}
 
-	public ADespesa[] buscaListaDespesasSuspensas() {
-		// TODO - implement Facade.buscaListaDespesasSuspensas
-		throw new UnsupportedOperationException();
-	}
+    public ADespesa[] buscaListaDespesasSuspensas() 
+    {
+        throw new UnsupportedOperationException();
+    }
 
 	public SPagamento[] buscaListaDividas() {
 		// TODO - implement Facade.buscaListaDividas
 		throw new UnsupportedOperationException();
 	}
 
-	public SMorador[] buscaListaMoradores() {
-		// TODO - implement Facade.buscaListaMoradores
-		throw new UnsupportedOperationException();
-	}
+    public List<SMorador> buscaListaMoradores() {
+        return (List<SMorador>) moradores.values();
+    }
 
 	public SPagamento[] buscaListaPagamentos() {
 		// TODO - implement Facade.buscaListaPagamentos
 		throw new UnsupportedOperationException();
 	}
 
-	public SSenhorio buscaSenhorio() {
-		// TODO - implement Facade.buscaSenhorio
-		throw new UnsupportedOperationException();
-	}
+    public SSenhorio buscaSenhorio() 
+    {
+        return moradores.buscaSenhorio();
+    }
 
 	/**
 	 * 
@@ -189,14 +192,33 @@ public class Facade {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param Utilizador
-	 * @param Password
-	 */
-	public boolean validaLogin(String Utilizador, String Password) {
-		// TODO - implement Facade.validaLogin
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * 
+     * @param Utilizador
+     * @param Password
+     */
+    public boolean validaLogin(String Utilizador, String Password) {
+        boolean result=false;
+        AConta conta=moradores.Login(Utilizador, Password);
+        if (conta!=null)
+        {
+            moradorAtual=conta;
+            result=true;
+        }
+        else
+        {
+            moradorAtual=null;
+        }
+        return result;
+    }
+
+    public AConta buscaMoradorAtual() 
+    {
+        return moradorAtual;
+    }
+
+    public void alteraDespesa(ADespesa despesa) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

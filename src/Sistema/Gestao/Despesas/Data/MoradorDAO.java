@@ -5,12 +5,14 @@
  */
 package Sistema.Gestao.Despesas.Data;
 
+import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.AConta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Sistema.Gestao.Despesas.SQL.Connector;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
+import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -139,6 +141,18 @@ public class MoradorDAO implements Map<String,SMorador>
 
     @Override
     public Set<Entry<String, SMorador>> entrySet() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public SSenhorio buscaSenhorio() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void atualizaSenhorio(SSenhorio Senhorio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public AConta Login(String Utilizador, String Password) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

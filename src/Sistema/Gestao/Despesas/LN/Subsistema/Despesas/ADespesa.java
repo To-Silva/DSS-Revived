@@ -7,16 +7,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class ADespesa {
-	private LocalDateTime dataDespesa;
-	private boolean ocasional;
-	private String descricao;
-	private EstadoDespesa estado;
-	private Map<String,SPagamento> pagamentos;
+public abstract class ADespesa 
+{
+    private LocalDateTime dataDespesa;
+    private boolean ocasional;
+    private String descricao;
+    private EstadoDespesa estado;
+    private Map<String,SPagamento> pagamentos;
 
-        public void arquiva(){
-            this.estado=EstadoDespesa.DespesaArquivada;
-        }
+    public ADespesa(LocalDateTime now,
+                         boolean b,
+                         String Nome,
+                         EstadoDespesa estadoDespesa,
+                         Map<String, SPagamento> pagamentos) 
+    {
+        dataDespesa=now;
+        ocasional=b;
+        descricao=Nome;
+        estado=estadoDespesa;
+        this.pagamentos=pagamentos;
+    }
+
+    public void arquiva(){
+        this.estado=EstadoDespesa.DespesaArquivada;
+    }
         
         protected void mudaParaAtiva(){
             this.estado=EstadoDespesa.DespesaAtiva;
@@ -26,8 +40,8 @@ public abstract class ADespesa {
             this.estado=EstadoDespesa.DespesaSuspensa;
         }            
         
-	public abstract buscaInformacoes () {
-
+	public String buscaInformacoes () {
+            return descricao;
 	}
 
 	public SPagamento buscaPagamento (String moradorDespesa) {
@@ -73,4 +87,5 @@ public abstract class ADespesa {
         public EstadoDespesa buscaEstado() {
             return this.estado;
         }
+
 }

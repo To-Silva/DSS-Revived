@@ -5,11 +5,13 @@
  */
 package Sistema.Gestao.Despesas.UI;
 
+import Sistema.Gestao.Despesas.LN.Facade;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.ADespesa;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.EstadoDespesa;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.SDespesaLocal;
 import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
+import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.AConta;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +27,7 @@ import java.util.List;
  */
 public class MainUI {
     Facade Facade;
+    AConta moradorAtual;
     
     public void MainUI()
     {
@@ -46,10 +49,12 @@ public class MainUI {
                 sb.append("Escolha os moradores envolvidos na despesa separados por vírgulas");
                 List<SMorador> Lista=Facade.buscaListaMoradores();
                 int i=1;
-                for(Morador : Lista) 
+                for(SMorador Morador : Lista) 
                 {
                     sb.append(i).append(" - ").append(Morador.buscaNome());
+                    i++;
                 }
+                System.out.println(sb.toString());
                 int indexes[]=Menu.readCSVInts(bf);
                 if (indexes!=null) 
                 {
@@ -59,7 +64,7 @@ public class MainUI {
                         SPagamento pagamento 
                                 = new SPagamento(LocalDateTime.now().plusDays(30),
                                                  Valor/indexes.length);
-                        pagamentos.put(Lista.get(index).buscaNome(),pagamento);
+                        pagamentos.put(Lista.get(index-1).buscaNome(),pagamento);
                     }
                     ADespesa despesa=new SDespesaLocal(LocalDateTime.now(),
                                                        false,
@@ -74,7 +79,29 @@ public class MainUI {
     
     private void ValidarDespesaMorador(BufferedReader bf) throws IOException
     {
-    
+        System.out.println("--@quit a qualquer altura para sair--");
+        StringBuilder sb=new StringBuilder();
+        sb.append("Escolha a despesa em que está envolvido que pretende validar");
+        List<ADespesa> Lista=Facade.buscaListaDespesasSuspensas();
+        int i=1;
+        for(ADespesa despesa : Lista) 
+        {
+            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+        }
+        int index=Menu.readPosInt(bf);
+        if (index!=-1) 
+        {
+            SDespesaLocal despesa=(SDespesaLocal) Lista.get(index);
+            if(despesa.buscaVotosValidar().get(((SMorador)moradorAtual).buscaNome())) 
+            {
+                System.out.println("Despesa já está validada");
+            }
+            else 
+            {
+                despesa.valida((SMorador)moradorAtual);
+                Facade.alteraDespesa(despesa);
+            }                
+        }
     }
     
     private void RemoverDespesaMorador(BufferedReader bf) throws IOException
@@ -167,7 +194,15 @@ public class MainUI {
         }
         else 
         {
-            MoradorMainMenu(bf);
+            moradorAtual = Facade.buscaMoradorAtual();
+            if(moradorAtual !=null && moradorAtual instanceof SMorador)
+            {
+                MoradorMainMenu(bf);
+            }
+            else if (moradorAtual!=null) 
+            {
+                SenhorioMainMenu(bf);
+            }
         }
     }
     
@@ -224,5 +259,9 @@ public class MainUI {
     {
         MainUI ui=new MainUI();
         ui.runMainMenu();
+    }
+
+    private void SenhorioMainMenu(BufferedReader bf) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
