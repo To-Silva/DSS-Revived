@@ -106,8 +106,30 @@ public class MoradorDAO implements Map<String,SMorador>
     }
 
     @Override
-    public SMorador remove(Object key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SMorador remove(Object o) {
+         String nome=(String)o;
+         Connection con = null;
+        try { 
+            con = Connector.connect();    
+            /**
+            * Atualizar tabela Morador.
+            */
+            PreparedStatement ps = con.prepareStatement("Update Morador (Nome,Data,Removido)\n"
+                                                       +"SET Removido=?\n"
+                                                       +"Where Nome=?\n");
+            ps.setBoolean(1,true);
+            ps.setString(2, nome);
+            ps.executeUpdate();       
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DespesaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }       
+        return null;
     }
 
     @Override
