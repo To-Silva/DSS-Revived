@@ -215,7 +215,18 @@ public class MoradorDAO implements Map<String,SMorador>
                     Senhorio = rs.getString(2);
                 }
             } 
-            catch (SQLException e) 
+            if Morador!=null || Senhorio !=null)
+            {
+                if (Morador!=null)
+                {
+                    PreparedStatement ps2 = con.prepareStatement("select Data,Removido from Morador where Nome=?")
+                    ps2.setString(1,Morador);
+                    ResultSet rs2= ps.executeQuery();
+                    
+                }
+            }
+        }
+        catch (SQLException e) 
             {
                 e.printStackTrace();
             } 

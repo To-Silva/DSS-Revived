@@ -106,7 +106,7 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
                                                        "(Nome,Despesa,votoRemover,votoValidar)\n" 
                                                        +"VALUES (?,?,?,?)\n");
                         ps2.setString(1, nome);
-                        ps2.setString(2, value.buscaData().toString());
+                        ps2.setTimestamp(2, value.buscaData());
                         ps2.setBoolean(3, false);
                         ps2.setBoolean(4, false);
                         ps2.executeUpdate();
@@ -123,7 +123,7 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
                                              +"VALUES (?,?,?,?)\n");
                 ps3.setString(1, pagamento.toString());
                 ps3.setFloat(2, pagamento.buscaValor());
-                ps3.setNull(3, Types.DATE);
+                ps3.setNull(3, Types.TIMESTAMP);
                 ps3.setNull(4, Types.VARCHAR);
                 ps3.executeUpdate();    
             }
@@ -140,8 +140,8 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
                                                "(Nome,Despesa,Pagamento)\n" 
                                                +"VALUES (?,?,?)\n");
                     ps4.setString(1, nome);
-                    ps4.setString(2, value.buscaData().toString());
-                    ps4.setString(3, pagamento.buscaData().toString());
+                    ps4.setTimestamp(2, value.buscaData());
+                    ps4.setTimestamp(3, pagamento.buscaData());
                     ps4.executeUpdate();
                 }                 
             }
