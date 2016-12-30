@@ -380,10 +380,10 @@ public class MainUI {
         sb.append("4 - Pagar Despesa\n");
         sb.append("5 - Pagar Dívida\n");
         sb.append("6 - Alterar Informações de Morador\n");
-        sb.append("7 - Consultar Dividas");
-        sb.append("8 - Consultar Pagamentos");
-        sb.append("9 - Consultar informações do Senhorio");
-        sb.append("10 - Consultar Despesas");
+        sb.append("7 - Consultar Dividas\n");
+        sb.append("8 - Consultar Pagamentos\n");
+        sb.append("9 - Consultar informações do Senhorio\n");
+        sb.append("10 - Consultar Despesas\n");
         Menu m= new Menu(sb,bf);
         m.addChoice((InputProcedure)this::AdicionarDespesaMorador);
         m.addChoice((InputProcedure)this::ValidarDespesaMorador);
@@ -519,7 +519,7 @@ public class MainUI {
         Password=Menu.readString(bf);
         System.out.println("Digite o nome do morador");
         Nome=Menu.readString(bf);
-        Facade.adicionaMorador(new SMorador(Utilizador,Password,new Date(LocalDate.now().toEpochDay()),Nome));
+        Facade.adicionaMorador(new SMorador(Utilizador,Password,new Date(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()),Nome));
     }
     
     private void ConsultarPagamentosSenhorio(BufferedReader bf) 

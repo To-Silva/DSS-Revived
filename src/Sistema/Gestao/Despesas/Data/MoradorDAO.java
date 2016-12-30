@@ -248,12 +248,12 @@ public class MoradorDAO implements Map<String,SMorador>
             /**
             * Atualizar tabela Morador.
             */
-            PreparedStatement ps = con.prepareStatement("SELECT Username,Password,Morador,Data,Removido FROM Conta innerjoin Morador on Conta.Morador=Morador.Nome"); 
+            PreparedStatement ps = con.prepareStatement("SELECT Username,Password,Morador,Data,Removido FROM Conta join Morador on Morador=Nome"); 
             ResultSet rs=ps.executeQuery();
             moradores= new ArrayList<>(10);
             while(rs.next()) 
             {
-                if(rs.getBoolean(5)) 
+                if(!rs.getBoolean(5)) 
                 {
                     moradores.add(new SMorador(rs.getString(1),rs.getString(2),rs.getDate(4),rs.getString(3)));
                 }
