@@ -79,6 +79,7 @@ public class MoradorDAO implements Map<String,SMorador>
             * Atualizar tabela Morador.
             */
             PreparedStatement ps = con.prepareStatement("SELECT Username FROM Conta where Username=?"); 
+            ps.setString(1, Username);
             ResultSet rs=ps.executeQuery();
             if(rs.next()) 
             {
@@ -337,8 +338,8 @@ public class MoradorDAO implements Map<String,SMorador>
         {
             con = Connector.connect();
             PreparedStatement ps = con.prepareStatement("select Morador,Senhorio from conta where Username=? and Password=?");
-            ps.setString(0, Utilizador);
-            ps.setString(1, Password);
+            ps.setString(1, Utilizador);
+            ps.setString(2, Password);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) 
             {

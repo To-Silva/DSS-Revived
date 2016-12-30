@@ -46,7 +46,7 @@ public class MainUI {
         System.out.println("--@quit a qualquer altura para sair--");
         System.out.println("Dê uma decrição da Despesa");
         String Nome=Menu.readString(bf);
-        if (Nome.equals("@quit"))
+        if (!Nome.equals("@quit"))
         {
             System.out.println("Atribua um valor à Despesa");
             float Valor=Menu.readPosFloat(bf);
@@ -91,7 +91,7 @@ public class MainUI {
         System.out.println("--@quit a qualquer altura para sair--");
         System.out.println("Dê uma decrição da Despesa");
         String Nome=Menu.readString(bf);
-        if (Nome.equals("@quit"))
+        if (!Nome.equals("@quit"))
         {
             System.out.println("Atribua um valor à Despesa");
             float Valor=Menu.readPosFloat(bf);
