@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import Sistema.Gestao.Despesas.SQL.Connector;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -210,37 +212,61 @@ public class MoradorDAO implements Map<String,SMorador>
             ps.setString(1, Password);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) 
-                {
+            {
                     Morador = rs.getString(1);
                     Senhorio = rs.getString(2);
-                }
-            } 
-            if Morador!=null || Senhorio !=null)
+            }
+        }
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        try 
+        {
+            if (Morador!=null || Senhorio !=null)
             {
                 if (Morador!=null)
                 {
-                    PreparedStatement ps2 = con.prepareStatement("select Data,Removido from Morador where Nome=?")
-                    ps2.setString(1,Morador);
-                    ResultSet rs2= ps.executeQuery();
-                    
+                    PreparedStatement ps = con.prepareStatement("select Data,Removido from Morador where Nome=?");
+                    ps.setString(1,Morador);
+                    ResultSet rs= ps.executeQuery();
+                    if(rs.next()) 
+                    {
+                        if(rs.getBoolean(2)) 
+                        {
+                            Date t=rs.getDate(1);
+                            res=new SMorador(Utilizador, Password, t, Morador);
+                        }
+                    }
+                }
+                else 
+                {
+                    PreparedStatement ps = con.prepareStatement("select Endereco from Senhorio where Nome=?");
+                    ps.setString(1,Senhorio);
+                    ResultSet rs= ps.executeQuery();
+                    if(rs.next()) 
+                    {
+                        String endereco=rs.getString(1); 
+                        res=new SSenhorio(Utilizador, Password, endereco, Senhorio);
+                    }
                 }
             }
         }
         catch (SQLException e) 
+        {
+            e.printStackTrace();
+        } 
+        finally 
+        {
+            try 
+            {
+                con.close();
+            } 
+            catch (Exception e) 
             {
                 e.printStackTrace();
-            } 
-            finally 
-            {
-                try 
-                {
-                    con.close();
-                } 
-                catch (Exception e) 
-                {
-                    e.printStackTrace();
-                }
             }
+        }
         return res;
     }
 }
