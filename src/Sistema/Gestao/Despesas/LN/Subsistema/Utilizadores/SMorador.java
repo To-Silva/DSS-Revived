@@ -1,16 +1,16 @@
 package Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores;
 
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class SMorador extends AConta
 {
-    private LocalDateTime dataDeResidencia;
+    private Timestamp dataDeResidencia;
     private String nome;
 
     public SMorador(String Username,
                     String Password,
-                    LocalDateTime DataDeResidencia,
+                    Timestamp DataDeResidencia,
                     String Nome)
     {
         super(Username, Password);
@@ -23,7 +23,7 @@ public class SMorador extends AConta
     	return this.nome;
     }
     
-    public LocalDateTime buscaDataDeResidencia (){
+    public Timestamp buscaDataDeResidencia (){
         return this.dataDeResidencia;
     }
 }

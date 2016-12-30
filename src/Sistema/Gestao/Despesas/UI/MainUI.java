@@ -17,7 +17,10 @@ import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,14 +66,14 @@ public class MainUI {
                     Map<String,List<SPagamento>> pagamentos = new HashMap<>(indexes.length);
                     for(int index : indexes) 
                     {
-                        SPagamento pagamento 
-                                = new SPagamento(LocalDateTime.now().plusDays(30),
-                                                 Valor/indexes.length);
+                        SPagamento pagamento;
+                        pagamento = new SPagamento(new Timestamp(LocalDateTime.now().plusDays(30).toInstant(ZoneOffset.UTC).toEpochMilli()),
+                                Valor/indexes.length);
                         List<SPagamento> pagamentosl=new ArrayList<>(1);
                         pagamentosl.add(pagamento);
                         pagamentos.put(Lista.get(index-1).buscaNome(),pagamentosl);
                     }
-                    ADespesa despesa=new SDespesaGeral(LocalDateTime.now(),
+                    ADespesa despesa=new SDespesaGeral(new Timestamp(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()),
                                                        false,
                                                        Nome,
                                                        EstadoDespesa.DespesaSuspensa,
@@ -109,13 +112,13 @@ public class MainUI {
                     for(int index : indexes) 
                     {
                         SPagamento pagamento 
-                                = new SPagamento(LocalDateTime.now().plusDays(30),
+                                = new SPagamento(new Timestamp(LocalDateTime.now().plusDays(30).toInstant(ZoneOffset.UTC).toEpochMilli()),
                                                  Valor/indexes.length);
                         List<SPagamento> pagamentosl=new ArrayList<>(1);
                         pagamentosl.add(pagamento);
                         pagamentos.put(Lista.get(index-1).buscaNome(),pagamentosl);
                     }
-                    ADespesa despesa=new SDespesaLocal(LocalDateTime.now(),
+                    ADespesa despesa=new SDespesaLocal(new Timestamp(LocalDateTime.now().plusDays(30).toInstant(ZoneOffset.UTC).toEpochMilli()),
                                                        false,
                                                        Nome,
                                                        EstadoDespesa.DespesaSuspensa,

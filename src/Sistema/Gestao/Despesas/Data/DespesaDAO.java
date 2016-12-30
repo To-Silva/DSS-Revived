@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.Timestamp;
 
 public class DespesaDAO implements Map<String,Collection<ADespesa>> {
 
@@ -87,7 +88,7 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
             */
             PreparedStatement ps = con.prepareStatement("INSERT INTO Despesa (Data,bOcasional,EstadoDespesa,bLocal,Descricao)\n" 
                                                         +"VALUES (?,?,?,?,?)\n");
-            ps.setString(1, (value.buscaData()).toString());
+            ps.setTimestamp(1, value.buscaData());
             ps.setBoolean(2, value.buscaOcasional());
             ps.setString(3, value.buscaEstado().toString());
             ps.setBoolean(4, value.buscaLocal());

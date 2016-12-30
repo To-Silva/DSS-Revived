@@ -1,16 +1,18 @@
 package Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class SPagamento 
 {
-	private LocalDateTime Data;
+	private Timestamp Data;
 	private float valor;
 	private String nome;
-	private LocalDateTime DataPagamento;
+	private Timestamp DataPagamento;
 
-    public SPagamento(LocalDateTime Data, float Valor) 
+    public SPagamento(Timestamp Data, float Valor) 
     {
         this.Data=Data;
         valor=Valor;
@@ -20,7 +22,7 @@ public class SPagamento
 
     public boolean atualizaPagamento() 
     {
-        this.DataPagamento=LocalDateTime.now();
+        this.DataPagamento=new Timestamp(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli());
         return true;
     }
         
@@ -32,11 +34,11 @@ public class SPagamento
             return this.valor;
         }
         
-        public LocalDateTime buscaData(){
+        public Timestamp buscaData(){
             return this.Data;
         }
         
-        public LocalDateTime buscaDataPagamento(){
+        public Timestamp buscaDataPagamento(){
             return this.DataPagamento;
         }        
         

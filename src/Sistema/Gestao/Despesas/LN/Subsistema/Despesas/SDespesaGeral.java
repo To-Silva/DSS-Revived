@@ -1,14 +1,14 @@
 package Sistema.Gestao.Despesas.LN.Subsistema.Despesas;
 
 import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
 public class SDespesaGeral extends ADespesa 
 {
 
-    public SDespesaGeral(LocalDateTime now,
+    public SDespesaGeral(Timestamp now,
                          boolean b,
                          String Nome,
                          EstadoDespesa estadoDespesa,

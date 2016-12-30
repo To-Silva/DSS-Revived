@@ -1,7 +1,7 @@
 package Sistema.Gestao.Despesas.LN.Subsistema.Despesas;
 
 import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 
 public abstract class ADespesa 
 {
-    private LocalDateTime dataDespesa;
+    private Timestamp dataDespesa;
     private boolean ocasional;
     private String descricao;
     private EstadoDespesa estado;
     private Map<String,List<SPagamento>> pagamentos;
 
-    public ADespesa(LocalDateTime now,
+    public ADespesa(Timestamp now,
                          boolean b,
                          String Nome,
                          EstadoDespesa estadoDespesa,
@@ -81,7 +81,7 @@ public abstract class ADespesa
             return pagamentos.keySet();
 	}
 
-	public LocalDateTime buscaData(){
+	public Timestamp buscaData(){
             return this.dataDespesa;
 	}
         

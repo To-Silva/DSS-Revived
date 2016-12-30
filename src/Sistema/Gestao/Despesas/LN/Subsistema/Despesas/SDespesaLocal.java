@@ -3,7 +3,7 @@ package Sistema.Gestao.Despesas.LN.Subsistema.Despesas;
 import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
 import java.util.List;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class SDespesaLocal extends ADespesa {
@@ -12,7 +12,7 @@ public class SDespesaLocal extends ADespesa {
     private Map<String,Boolean> votosValidar;
     private Map<String,Boolean> votosRemover;
 
-    public SDespesaLocal(LocalDateTime now,
+    public SDespesaLocal(Timestamp now,
                          boolean b,
                          String Nome,
                          EstadoDespesa estadoDespesa,
