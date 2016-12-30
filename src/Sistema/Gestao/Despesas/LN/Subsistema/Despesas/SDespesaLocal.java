@@ -58,5 +58,9 @@ public class SDespesaLocal extends ADespesa {
         return votosValidar;
     }
 
+    public Map<String,Boolean> buscaVotosRemover() {
+        return votosRemover;
+    }
+
 
 }

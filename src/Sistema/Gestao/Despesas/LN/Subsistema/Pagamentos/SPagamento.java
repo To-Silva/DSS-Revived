@@ -14,7 +14,7 @@ public class SPagamento
     {
         this.Data=Data;
         valor=Valor;
-        nomes=null;
+        nome=null;
         DataPagamento=null;
     }
 
