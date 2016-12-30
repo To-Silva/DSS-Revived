@@ -16,6 +16,7 @@ import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SSenhorio;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -146,11 +147,11 @@ public class MoradorDAO implements Map<String,SMorador>
             ps.executeUpdate();
             PreparedStatement ps2 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)\n" 
                                                          + "VALUES (?,?,?,?)");
-            ps.setString(1, value.buscaUsername());
-            ps.setString(2,value.buscaPassword());
-            ps.setString(3, value.buscaNome());
-            ps.setNull(4, Types.VARCHAR);
-            ps.executeUpdate();        
+            ps2.setString(1, value.buscaUsername());
+            ps2.setString(2,value.buscaPassword());
+            ps2.setString(3, value.buscaNome());
+            ps2.setNull(4, Types.VARCHAR);
+            ps2.executeUpdate();        
         } catch (Exception e) {
            e.printStackTrace();
         } finally {
@@ -249,6 +250,7 @@ public class MoradorDAO implements Map<String,SMorador>
             */
             PreparedStatement ps = con.prepareStatement("SELECT Username,Password,Morador,Data,Removido FROM Conta innerjoin Morador on Conta.Morador=Morador.Nome"); 
             ResultSet rs=ps.executeQuery();
+            moradores= new ArrayList<>(10);
             while(rs.next()) 
             {
                 if(rs.getBoolean(5)) 
@@ -389,7 +391,7 @@ public class MoradorDAO implements Map<String,SMorador>
                     ResultSet rs= ps.executeQuery();
                     if(rs.next()) 
                     {
-                        if(rs.getBoolean(2)) 
+                        if(!rs.getBoolean(2)) 
                         {
                             Date t=rs.getDate(1);
                             res=new SMorador(Utilizador, Password, t, Morador);

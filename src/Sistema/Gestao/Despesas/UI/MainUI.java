@@ -446,7 +446,7 @@ public class MainUI {
         Nome=Menu.readString(bf);
         System.out.println("Digite a sua morada");
         Endereco=Menu.readString(bf);        
-        Facade.atualizaSenhorio(new SSenhorio(Utilizador,Password,Nome,Endereco));
+        Facade.atualizaSenhorio(new SSenhorio(Utilizador,Password,Endereco,Nome));
         System.out.println("Registo efetuado com sucesso");
     }
     
