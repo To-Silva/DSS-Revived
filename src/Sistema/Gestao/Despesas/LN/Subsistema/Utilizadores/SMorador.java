@@ -22,4 +22,8 @@ public class SMorador extends AConta
     {
     	return this.nome;
     }
+    
+    public LocalDateTime buscaDataDeResidencia (){
+        return this.dataDeResidencia;
+    }
 }

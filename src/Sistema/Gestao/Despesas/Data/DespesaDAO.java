@@ -7,9 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class DespesaDAO implements Map<String,ADespesa[]> {
+public class DespesaDAO implements Map<String,Collection<ADespesa>> {
 
     @Override
     public int size() 
@@ -63,17 +66,21 @@ public class DespesaDAO implements Map<String,ADespesa[]> {
     public ADespesa get(Object key) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    public ADespesa put(String nome, ADespesa value) {
+    
+    @Override
+    public Collection<ADespesa> put(String s,Collection<ADespesa> d) {
+        
+    }
+    
+    public ADespesa insereDespesa(String nome, ADespesa value) {
+        Connection con = null;
         try { 
-            Connection con = null;
             con = Connector.connect();    
             /**
             * Atualizar tabela Despesa.
             */
             PreparedStatement ps = con.prepareStatement("INSERT INTO Despesa (Data,bOcasional,EstadoDespesa,bLocal)\n" 
-                                                        +"VALUES (?,?,?,?)\n"
-                                                        +"ON DUPLICATE KEY UPDATE EstadoDespesa=VALUES(EstadoDespesa)");
+                                                        +"VALUES (?,?,?,?)\n");
             ps.setString(1, (value.buscaData()).toString());
             ps.setBoolean(2, value.buscaOcasional());
             ps.setString(3, value.buscaEstado().toString());
@@ -94,7 +101,7 @@ public class DespesaDAO implements Map<String,ADespesa[]> {
                     ps2.executeUpdate();
             } 
             /**
-            * Atualizar tabela MoradorDespesaPagamento.
+            * Atualizar tabela Pagamento.
             */            
             PreparedStatement ps3 = con.prepareStatement("INSERT INTO Pagamento (Data,Valor,DataPagamento,Nome)\n" 
                                                         +"VALUES (?,?,?,?)\n");
@@ -117,7 +124,11 @@ public class DespesaDAO implements Map<String,ADespesa[]> {
         } catch (Exception e) {
            e.printStackTrace();
         } finally {
-           Connect.close(con);
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DespesaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }       
         return value;
     }
