@@ -332,11 +332,18 @@ public class MoradorDAO implements Map<String,SMorador>
             PreparedStatement ps2 = con.prepareStatement("Select Username from Conta where Username=?");
             ps2.setString(1,Senhorio.buscaUsername());
             ResultSet rs=ps2.executeQuery();
-            if(rs.next()) 
+            if(!rs.next()) 
             {
-                PreparedStatement ps3 = con.prepareStatement("REMOVE FROM Conta where Senhorio=?"); 
+                PreparedStatement ps3 = con.prepareStatement("Select Username from Conta where Senhorio=?"); 
                 ps3.setString(1, Senhorio.nome);
-                ps3.executeUpdate();                
+                ps3.executeQuery();
+                ResultSet rs2=ps3.executeQuery();
+                if(rs2.next()) 
+                {
+                    PreparedStatement ps5 = con.prepareStatement("DELETE FROM Conta where Username=?"); 
+                    ps3.setString(1, rs2.getString(1));
+                    ps3.executeUpdate();
+                }                
             }
             PreparedStatement ps4 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)" 
                                                          + "VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE Password=?");
