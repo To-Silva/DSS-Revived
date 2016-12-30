@@ -37,10 +37,7 @@ public class Facade {
 	 * @param Despesa
 	 */
 	public void adicionaDespesa(ADespesa despesa) {
-            Set<String> nomes=despesa.buscaMoradores();
-            for (String s : nomes) {
-                despesas.put(s,despesa);
-            }
+            despesas.insereDespesa(despesa);
 	}
 
 	/**

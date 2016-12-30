@@ -2,6 +2,7 @@ package Sistema.Gestao.Despesas.LN.Subsistema.Despesas;
 
 import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
 import Sistema.Gestao.Despesas.LN.Subsistema.Utilizadores.SMorador;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class SDespesaLocal extends ADespesa {
                          boolean b,
                          String Nome,
                          EstadoDespesa estadoDespesa,
-                         Map<String, SPagamento> pagamentos) 
+                         Map<String,List<SPagamento>> pagamentos) 
     {
         super(now,b,Nome,estadoDespesa,pagamentos);
         DespesaOriginal=null;

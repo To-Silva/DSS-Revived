@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class ADespesa 
 {
@@ -13,13 +14,13 @@ public abstract class ADespesa
     private boolean ocasional;
     private String descricao;
     private EstadoDespesa estado;
-    private Map<String,SPagamento> pagamentos;
+    private Map<String,List<SPagamento>> pagamentos;
 
     public ADespesa(LocalDateTime now,
                          boolean b,
                          String Nome,
                          EstadoDespesa estadoDespesa,
-                         Map<String, SPagamento> pagamentos) 
+                         Map<String,List<SPagamento>> pagamentos) 
     {
         dataDespesa=now;
         ocasional=b;
@@ -44,12 +45,24 @@ public abstract class ADespesa
             return descricao;
 	}
 
-	public SPagamento buscaPagamento (String moradorDespesa) {
+        public List<SPagamento> buscaPagamentos() 
+        {
+            List<SPagamento> resultados= new ArrayList<>(10);
+            pagamentos.values().stream().forEach(l->l.stream().forEach(resultados::add));
+            return resultados;
+        }
+        
+        public List<SPagamento> buscaPagamentos(String moradorDespesa) {
             return pagamentos.get(moradorDespesa);
 	}
 
-	public boolean haPagamento (){
-            return pagamentos.values().stream().anyMatch((p) -> (p.buscaPago()));
+	public boolean haPagamento ()
+        {
+            return pagamentos.values()
+                             .stream()
+                             .anyMatch(
+                                (p) -> (p.stream()
+                                         .anyMatch(pag->pag.buscaPago())));
 	}
 
 	public boolean estaArquivada(){

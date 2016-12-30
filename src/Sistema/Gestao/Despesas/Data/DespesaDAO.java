@@ -2,13 +2,16 @@ package Sistema.Gestao.Despesas.Data;
 
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.ADespesa;
 import Sistema.Gestao.Despesas.LN.Subsistema.Despesas.SDespesaLocal;
+import Sistema.Gestao.Despesas.LN.Subsistema.Pagamentos.SPagamento;
 import Sistema.Gestao.Despesas.SQL.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,16 +66,19 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
     }
 
     @Override
-    public ADespesa get(Object key) {
+    public ADespesa get(Object key) 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
     public Collection<ADespesa> put(String s,Collection<ADespesa> d) {
-        
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.        
     }
     
-    public ADespesa insereDespesa(String nome, ADespesa value) {
+    public boolean insereDespesa(ADespesa value) {
+        Set<String> nomes = value.buscaMoradores();
+        boolean falhou = false;
         Connection con = null;
         try { 
             con = Connector.connect();    
@@ -92,38 +98,55 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
                     /**
                     * Atualizar tabela MoradorDespesa.
                     */
-
-                    PreparedStatement ps2 = con.prepareStatement("INSERT INTO MoradorDespesa (Nome,Despesa,votoRemover,votoValidar)\n" 
-                                                                +"VALUES (?,?,?,?)\n");
-                    ps2.setString(1, nome);
-                    ps2.setString(2, value.buscaData().toString());
-                    ps2.setBoolean(3, false);
-                    ps2.setBoolean(4, false);
-                    ps2.executeUpdate();
+                    for(String nome : nomes) 
+                    {
+                        PreparedStatement ps2 
+                                = con.prepareStatement("INSERT INTO MoradorDespesa "+
+                                                       "(Nome,Despesa,votoRemover,votoValidar)\n" 
+                                                       +"VALUES (?,?,?,?)\n");
+                        ps2.setString(1, nome);
+                        ps2.setString(2, value.buscaData().toString());
+                        ps2.setBoolean(3, false);
+                        ps2.setBoolean(4, false);
+                        ps2.executeUpdate();
+                    }
             } 
             /**
             * Atualizar tabela Pagamento.
-            */            
-            PreparedStatement ps3 = con.prepareStatement("INSERT INTO Pagamento (Data,Valor,DataPagamento,Nome)\n" 
-                                                        +"VALUES (?,?,?,?)\n");
-            ps3.setString(1, value.buscaPagamento(nome).toString());
-            ps3.setFloat(2, value.buscaPagamento(nome).buscaValor());
-            ps3.setString(3, value.buscaPagamento(nome).buscaDataPagamento().toString());
-            ps3.setString(4, value.buscaPagamento(nome).buscaNome());
-            ps3.executeUpdate();    
+            */
+            for(SPagamento pagamento : value.buscaPagamentos()) 
+            {
+                PreparedStatement ps3 = 
+                        con.prepareStatement("INSERT INTO Pagamento "+
+                                             "(Data,Valor,DataPagamento,Nome)\n" 
+                                             +"VALUES (?,?,?,?)\n");
+                ps3.setString(1, pagamento.toString());
+                ps3.setFloat(2, pagamento.buscaValor());
+                ps3.setNull(3, Types.DATE);
+                ps3.setNull(4, Types.VARCHAR);
+                ps3.executeUpdate();    
+            }
             
             /**
             * Atualizar tabela MoradorDespesaPagamento.
-            */            
-            PreparedStatement ps4 = con.prepareStatement("INSERT INTO MoradorDespesaPagamento (Nome,Despesa,Pagamento)\n" 
-                                                        +"VALUES (?,?,?)\n");
-            ps4.setString(1, nome);
-            ps4.setString(2, value.buscaData().toString());
-            ps4.setString(3, value.buscaPagamento(nome).buscaData().toString());
-            ps4.executeUpdate();                 
-            
+            */
+            for(String nome : nomes) 
+            {
+                for(SPagamento pagamento : value.buscaPagamentos(nome)) 
+                {
+                    PreparedStatement ps4 
+                        = con.prepareStatement("INSERT INTO MoradorDespesaPagamento" +
+                                               "(Nome,Despesa,Pagamento)\n" 
+                                               +"VALUES (?,?,?)\n");
+                    ps4.setString(1, nome);
+                    ps4.setString(2, value.buscaData().toString());
+                    ps4.setString(3, pagamento.buscaData().toString());
+                    ps4.executeUpdate();
+                }                 
+            }
         } catch (Exception e) {
            e.printStackTrace();
+           falhou=true;
         } finally {
             try {
                 con.close();
@@ -131,7 +154,7 @@ public class DespesaDAO implements Map<String,Collection<ADespesa>> {
                 Logger.getLogger(DespesaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }       
-        return value;
+        return !falhou;
     }
 
         public ADespesa alteraDespesa(String nome, ADespesa value) {

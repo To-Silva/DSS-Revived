@@ -99,7 +99,8 @@ public class MoradorDAO implements Map<String,SMorador>
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(DespesaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+                value=null;
             }
         }       
         return value;
