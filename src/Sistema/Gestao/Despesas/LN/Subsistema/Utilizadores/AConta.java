@@ -9,4 +9,14 @@ public abstract class AConta {
             username=Username;
             password=Password;
     }
+    
+    public void alteraUser(String Username)
+    {
+        username=Username;
+    }
+    
+    public void alteraPassword(String Password)
+    {
+        password=Password;
+    }
 }

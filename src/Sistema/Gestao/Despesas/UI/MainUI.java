@@ -47,12 +47,12 @@ public class MainUI {
             if (Valor!=-1) 
             {
                 StringBuilder sb=new StringBuilder();
-                sb.append("Escolha os moradores envolvidos na despesa separados por vírgulas");
+                sb.append("Escolha os moradores envolvidos na despesa separados por vírgulas\n");
                 List<SMorador> Lista=Facade.buscaListaMoradores();
                 int i=1;
                 for(SMorador Morador : Lista) 
                 {
-                    sb.append(i).append(" - ").append(Morador.buscaNome());
+                    sb.append(i).append(" - ").append(Morador.buscaNome()).append("\n");
                     i++;
                 }
                 System.out.println(sb.toString());
@@ -90,12 +90,12 @@ public class MainUI {
             if (Valor!=-1) 
             {
                 StringBuilder sb=new StringBuilder();
-                sb.append("Escolha os moradores envolvidos na despesa separados por vírgulas");
+                sb.append("Escolha os moradores envolvidos na despesa separados por vírgulas\n");
                 List<SMorador> Lista=Facade.buscaListaMoradores();
                 int i=1;
                 for(SMorador Morador : Lista) 
                 {
-                    sb.append(i).append(" - ").append(Morador.buscaNome());
+                    sb.append(i).append(" - ").append(Morador.buscaNome()).append("\n");
                     i++;
                 }
                 System.out.println(sb.toString());
@@ -125,12 +125,13 @@ public class MainUI {
     {
         System.out.println("--@quit a qualquer altura para sair--");
         StringBuilder sb=new StringBuilder();
-        sb.append("Escolha a despesa em que está envolvido que pretende validar");
+        sb.append("Escolha a despesa em que está envolvido que pretende validar\n");
         List<ADespesa> Lista=Facade.buscaListaDespesasSuspensas();
         int i=1;
         for(ADespesa despesa : Lista) 
         {
-            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+            sb.append(i).append(" - ").append(despesa.buscaDescricao()).append("\n");
+            i++;
         }
         System.out.println(sb.toString());
         int index=Menu.readPosInt(bf);
@@ -153,12 +154,13 @@ public class MainUI {
     {
         System.out.println("--@quit a qualquer altura para sair--");
         StringBuilder sb=new StringBuilder();
-        sb.append("Escolha a despesa em que está envolvido que pretende remover");
+        sb.append("Escolha a despesa em que está envolvido que pretende remover\n");
         List<ADespesa> Lista=Facade.buscaListaDespesasSuspensas();
         int i=1;
         for(ADespesa despesa : Lista) 
         {
-            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+            sb.append(i).append(" - ").append(despesa.buscaDescricao()).append("\n");
+            i++;
         }
         System.out.println(sb.toString());
         int index=Menu.readPosInt(bf);
@@ -172,7 +174,11 @@ public class MainUI {
             else 
             {
                 despesa.votoRemocao((SMorador)moradorAtual);
-                Facade.alteraDespesa(despesa);
+                if(!despesa.porValidar()) 
+                {
+                    despesa.ativa();
+                }
+                Facade.alteraDespesa(despesa);                
             }                
         }    
     }
@@ -181,12 +187,13 @@ public class MainUI {
     {
         System.out.println("--@quit a qualquer altura para sair--");
         StringBuilder sb=new StringBuilder();
-        sb.append("Escolha a despesa em que está envolvido que pretende remover");
+        sb.append("Escolha a despesa em que está envolvido que pretende remover\n");
         List<ADespesa> Lista=Facade.buscaListaDespesasGeraisAtivas();
         int i=1;
         for(ADespesa despesa : Lista) 
         {
-            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+            sb.append(i).append(" - ").append(despesa.buscaDescricao()).append("\n");
+            i++;
         }
         System.out.println(sb.toString());
         int index=Menu.readPosInt(bf);
@@ -208,12 +215,13 @@ public class MainUI {
     {
         System.out.println("--@quit a qualquer altura para sair--");
         StringBuilder sb=new StringBuilder();
-        sb.append("Escolha a despesa em que está envolvido que pretende pagar");
+        sb.append("Escolha a despesa em que está envolvido que pretende pagar\n");
         List<ADespesa> Lista=Facade.buscaListaDespesasAtivas();
         int i=1;
         for(ADespesa despesa : Lista) 
         {
-            sb.append(i).append(" - ").append(despesa.buscaDescricao());
+            sb.append(i).append(" - ").append(despesa.buscaDescricao()).append("\n");
+            i++;
         }
         System.out.println(sb.toString());
         int index=Menu.readPosInt(bf);
@@ -236,12 +244,13 @@ public class MainUI {
     {
         System.out.println("--@quit a qualquer altura para sair--");
         StringBuilder sb=new StringBuilder();
-        sb.append("Escolha a dívida que pretende pagar");
+        sb.append("Escolha a dívida que pretende pagar\n");
         List<SPagamento> Lista=Facade.buscaListaDividas();
         int i=1;
         for(SPagamento divida : Lista) 
         {
-            sb.append(i).append(" - ").append(divida.toString());
+            sb.append(i).append(" - ").append(divida.toString()).append("\n");
+            i++;
         }
         System.out.println(sb.toString());
         int index=Menu.readPosInt(bf);
@@ -250,32 +259,104 @@ public class MainUI {
             SPagamento divida=Lista.get(index);
             Facade.arquivaDivida(divida);                
         }
-
     }
     
-    private void AlterarMorador(BufferedReader bf) throws IOException
+    private void AlterarUtilizador(BufferedReader bf) throws IOException
     {
-    
+        StringBuilder sb=new StringBuilder();
+        sb.append("Escolha as informações que pretende alterar\n");
+        sb.append("0 - Sair\n");
+        sb.append("1 - Alterar Username\n");
+        sb.append("2 - Alterar Password\n");
+        Menu m= new Menu(sb,bf);
+        m.addChoice((InputProcedure)this::AlterarUsername);
+        m.addChoice((InputProcedure)this::AlterarPassword);
+        m.run();
     }
+    
+    
+    private void AlterarUsername(BufferedReader bf) throws IOException
+    {
+        System.out.println("Digite o novo username");
+        String Username = Menu.readString(bf);
+        if(Facade.existeUtilizador(Username)) 
+        {
+            System.out.println("Utilizador já existe");
+        }      
+        else 
+        {
+            moradorAtual.alteraUser(Username);
+            if (moradorAtual instanceof SMorador) 
+            {
+                Facade.atualizaMorador((SMorador)moradorAtual);
+            }
+            else 
+            {
+                Facade.atualizaSenhorio((SSenhorio)moradorAtual);
+            }
+        }
+    }
+
+    private void AlterarPassword(BufferedReader bf) throws IOException
+    {
+        System.out.println("Digite a nova password");
+        String Password = Menu.readString(bf);
+        moradorAtual.alteraPassword(Password);
+        if (moradorAtual instanceof SMorador) 
+        {
+            Facade.atualizaMorador((SMorador)moradorAtual);
+        }
+        else 
+        {
+            Facade.atualizaSenhorio((SSenhorio)moradorAtual);
+        }
+    }
+
     
     private void ConsultarDividas(BufferedReader bf) throws IOException
     {
-    
+        StringBuilder sb=new StringBuilder();
+        sb.append("Escolha a dívida que pretende pagar\n");
+        List<SPagamento> Lista=Facade.buscaListaDividas();
+        int i=1;
+        for(SPagamento divida : Lista) 
+        {
+            sb.append(i).append(" - ").append(divida.toString()).append("\n");
+            i++;
+        }
+        System.out.println(sb.toString());
     }
 
     private void ConsultarPagamentosMorador(BufferedReader bf) throws IOException
     {
-    
+        StringBuilder sb=new StringBuilder();
+        List<SPagamento> Lista=Facade.buscaListaPagamentos();
+        int i=1;
+        for(SPagamento pagamento : Lista)
+        {
+            sb.append(i).append(" - ").append(pagamento.toString()).append("\n");
+            i++;
+        }
+        System.out.println(sb.toString());
     }
 
     private void ConsultarSenhorio(BufferedReader bf) throws IOException
     {
-    
+        SSenhorio senhorio=Facade.buscaSenhorio();
+        System.out.println(senhorio.nome + " " + senhorio.endereco);
     }
     
     private void ConsultarDespesasMorador(BufferedReader bf) throws IOException
     {
-    
+        StringBuilder sb=new StringBuilder();
+        List<ADespesa> Lista=Facade.buscaListaDespesas();
+        int i=1;
+        for(ADespesa despesa : Lista)
+        {
+            sb.append(i).append(" - ").append(despesa.buscaInformacoes()).append("\n");
+            i++;
+        }
+        System.out.println(sb.toString());
     }
 
     
@@ -299,7 +380,7 @@ public class MainUI {
         m.addChoice((InputProcedure)this::RemoverDespesaMorador);
         m.addChoice((InputProcedure)this::PagarDespesaMorador);
         m.addChoice((InputProcedure)this::PagarDívidaMorador);
-        m.addChoice((InputProcedure)this::AlterarMorador);
+        m.addChoice((InputProcedure)this::AlterarUtilizador);
         m.addChoice((InputProcedure)this::ConsultarDividas);
         m.addChoice((InputProcedure)this::ConsultarPagamentosMorador);
         m.addChoice((InputProcedure)this::ConsultarSenhorio);
@@ -324,7 +405,7 @@ public class MainUI {
         LoginValido=Facade.validaLogin(Utilizador,Password);
         if (!LoginValido) 
         {
-            System.out.println("Password inválida");
+            System.out.println("Utilizador ou password inválidos");
         }
         else 
         {
@@ -395,7 +476,47 @@ public class MainUI {
         ui.runMainMenu();
     }
 
-    private void SenhorioMainMenu(BufferedReader bf) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void SenhorioMainMenu(BufferedReader bf) throws IOException
+    {
+        StringBuilder sb= new StringBuilder();
+        sb.append("0 - Sair\n");
+        sb.append("1 - Adicionar Despesa\n");
+        sb.append("2 - Remover Despesa\n");
+        sb.append("3 - Alterar Informações de Senhorio\n");
+        sb.append("4 - Consultar Pagamentos");
+        sb.append("5 - Consultar Despesas");
+        Menu m= new Menu(sb,bf);
+        m.addChoice((InputProcedure)this::AdicionarDespesaSenhorio);
+        m.addChoice((InputProcedure)this::RemoverDespesaSenhorio);
+        m.addChoice((InputProcedure)this::AlterarUtilizador);
+        m.addChoice((InputProcedure)this::ConsultarPagamentosSenhorio);
+        m.addChoice((InputProcedure)this::ConsultarDespesasSenhorio);
+        m.run();
+    }
+    
+    private void ConsultarPagamentosSenhorio(BufferedReader bf) 
+    {
+        StringBuilder sb=new StringBuilder();
+        List<SPagamento> Lista=Facade.buscaListaPagamentosGerais();
+        int i=1;
+        for(SPagamento pagamento : Lista)
+        {
+            sb.append(i).append(" - ").append(pagamento.toString()).append("\n");
+            i++;
+        }
+        System.out.println(sb.toString());
+    }
+    
+    private void ConsultarDespesasSenhorio(BufferedReader bf) 
+    {
+        StringBuilder sb=new StringBuilder();
+        List<ADespesa> Lista=Facade.buscaListaDespesasGerais();
+        int i=1;
+        for(ADespesa despesa : Lista)
+        {
+            sb.append(i).append(" - ").append(despesa.buscaInformacoes()).append("\n");
+            i++;
+        }
+        System.out.println(sb.toString());
     }
 }

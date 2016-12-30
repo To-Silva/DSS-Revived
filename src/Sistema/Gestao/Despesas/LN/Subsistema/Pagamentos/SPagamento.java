@@ -43,4 +43,16 @@ public class SPagamento
         public String buscaNome (){
             return this.nome;
         }
+    
+    public String toString()
+    {
+        StringBuilder sb=new StringBuilder();
+        sb.append(Data.toString()).append(": Valor a pagar := ")
+                                  .append(valor);
+        if (DataPagamento!=null) 
+        {
+            sb.append(". Paga por:").append(nome).append(" em ").append(DataPagamento.toString());
+        }
+        return sb.toString();
+    }
 }
