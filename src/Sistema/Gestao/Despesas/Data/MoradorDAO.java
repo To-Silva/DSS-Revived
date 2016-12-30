@@ -246,25 +246,30 @@ public class MoradorDAO implements Map<String,SMorador>
         Connection con = null;
         try { 
             con = Connector.connect();    
-            /**
-            * Atualizar tabela Morador.
-            */
+            
             PreparedStatement ps = con.prepareStatement("INSERT INTO Senhorio (Nome,Endereco)" 
-                                                        +"VALUES (?,?) ON DUPLICATE KEY UPDATE Nome=?,Endereco=?");
+                                                        +"VALUES (?,?) ON DUPLICATE KEY UPDATE Endereco=?");
             ps.setString(1, Senhorio.nome);
             ps.setString(2, Senhorio.endereco);
             ps.setString(3, Senhorio.endereco);
             ps.executeUpdate();
-            PreparedStatement ps2 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)" 
-                                                         + "VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE Username=?,Password=?,Senhorio=?");
-            ps.setString(1, Senhorio.buscaUsername());
-            ps.setString(2,Senhorio.buscaPassword());
-            ps.setNull(3, Types.VARCHAR);
-            ps.setString(4, Senhorio.nome);
-            ps.setString(5, Senhorio.buscaUsername());
-            ps.setString(6,Senhorio.buscaPassword());
-            ps.setString(7, Senhorio.nome);
-            ps.executeUpdate();        
+            PreparedStatement ps2 = con.prepareStatement("Select Username from Conta where Username=?");
+            ps2.setString(1,Senhorio.buscaUsername());
+            ResultSet rs=ps2.executeQuery();
+            if(rs.next()) 
+            {
+                PreparedStatement ps3 = con.prepareStatement("REMOVE FROM Conta where Senhorio=?"); 
+                ps3.setString(1, Senhorio.nome);
+                ps3.executeUpdate();                
+            }
+            PreparedStatement ps4 = con.prepareStatement("INSERT INTO Conta (Username,Password,Morador,Senhorio)" 
+                                                         + "VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE Password=?");
+            ps4.setString(1, Senhorio.buscaUsername());
+            ps4.setString(2,Senhorio.buscaPassword());
+            ps4.setNull(3, Types.VARCHAR);
+            ps4.setString(4, Senhorio.nome);
+            ps4.setString(5,Senhorio.buscaPassword());
+            ps4.executeUpdate();        
         } catch (Exception e) {
            e.printStackTrace();
         } finally {
